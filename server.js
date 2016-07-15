@@ -19,58 +19,48 @@ var sass = require('metalsmith-sass');
 var metalsmithPrismicServer = require('metalsmith-prismic-server');
 
 var handlebarsHelpers = require('./plugins/handlebars-helpers');
+var languageHelpers = require('./plugins/language-helper');
 var utils = require('./utils/utils.js');
 
 var argv = require('process').argv;
 
+var defaultLanguage = 'fr';
 var config = {
-  // See src/config.js in metalsmith-prismic-server for all options
-
-  /**
-   * Configure metalsmith-prismic linkResolver
-   * Generates prismic links and paths for the files in a prismic collections
-   *
-   * E.g. The paths for each blog-post in the blog-post.md collection will be generated as:
-   *      /blog-post/my-second-blog-post/index.html
-   *
-   * E.g. The paths for prismic author links will be generated as:
-   *      /author/bob/
-   *
-   * Note: the linkResolver does not affect single prismic files
-   *
-   * *TEMPLATE* adjust this example function to suit your prismic content and folder structures
-   * *TEMPLATE* If omitted, links and paths will be generated with the default format of:
-   * *TEMPLATE* "/<document.type>/<document.id>/<document.slug>"
-   */
+  /*
+    Si language 'fr' alors mis en root, sinon mis dans le dossier 'en'
+    page mis en root
+    blog mis dans /blog/
+  */
   prismicLinkResolver (ctx, doc) {
-    if (doc.isBroken) {
-      return;
-    }
+    if (doc.isBroken)
+      return
 
-    // For prismic collection files append 'index.html'
-    // Leave it out for prismic link paths
-    var filename = doc.data ? 'index.html' : '';
-
-    var language = utils.getLanguageFromTags(doc);
-    if (language) {
-      // *TEMPLATE-i18n* Use this linkResolver to generate i18n-links based on languages tags defined in Prismic
-      // *TEMPLATE-i18n* E.g. The paths for each blog-post in the fi/i18n-blog-post.md collection will be generated as:
-      // *TEMPLATE-i18n*      /fi/i18n-blog-post/mun-toka-blogipostaus/index.html
-      // *TEMPLATE-i18n* Note: if all documents in prismic have a language tag, the root needs to handled manually
+    var filename = doc.data ? 'index.html' : ''
+    var language = utils.getLanguageFromTags(doc)
+    if(language === defaultLanguage){
       switch (doc.type) {
-        case 'i18n-example':
-          return '/' + language + '/' + filename;
-        default:
-          return '/' + language + '/' + doc.type + '/' +  (doc.uid || doc.slug) + '/' + filename;
-      }
-    } else {
-      switch (doc.type) {
+        case 'page':
         case 'home':
-          return '/' + filename;
+          return '/' + filename
+        case 'blog-post':
+          return '/blog/' +  (doc.uid || doc.slug) + '/' + filename
         default:
-          return '/' + doc.type + '/' +  (doc.uid || doc.slug) + '/' + filename;
+          return '/' + doc.type + '/' +  (doc.uid || doc.slug) + '/' + filename
       }
     }
+    else if(language !== defaultLanguage){
+      switch (doc.type) {
+        case 'page':
+        case 'home':
+          return '/' + language + '/' + filename
+        case 'blog-post':
+          return '/' + language + '/blog/' +  (doc.uid || doc.slug) + '/' + filename
+        default:
+          return '/' + language + '/' + doc.type + '/' +  (doc.uid || doc.slug) + '/' + filename
+      }
+    }
+    else
+      return '/' + filename
   },
 
   // Metalsmith plugins passed to metalsmithPrismicServer
@@ -80,6 +70,8 @@ var config = {
       markdown(),
       // Register handlebars helpers
       handlebarsHelpers(),
+      // Register language helpers
+      languageHelpers(),
       // Render with handlebars templates
       layouts({
         engine: 'handlebars',

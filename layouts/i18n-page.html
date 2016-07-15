@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  {{> head
+    title=prismic.content.results.0.data.title.json.value
+  }}
+  <body>
+    {{> debug }}
+    {{> links }}
+    <main class="main">
+
+    {{#with prismic.content.results.0.data}}
+      <section>
+        {{{ title.html }}}
+        <div>{{{ name.json.value }}}:<span id="name"></span></div>
+        <div>{{{ address.json.value }}}:<span id="address"></span></div>
+        <div>{{{ phone.json.value }}}:<span id="phone"></span></div>
+      </section>
+    {{/with}}
+    </main>
+  </body>
+</html>

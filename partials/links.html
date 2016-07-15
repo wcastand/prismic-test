@@ -1,16 +1,14 @@
 <ul>
-  {{#each languages }}
-    <li>
-      <a href="/{{ @key }}">{{ this }} Contact</a>
-    </li>
-  {{/each }}
   <li>
-    <a href="/">Home</a>
+    <a href="/">French</a>
   </li>
   <li>
-    <a href="/blog-post/">Blog</a>
+    <a href="/en">English</a>
   </li>
   <li>
-    <a href="/fi/i18n-blog-post/">Finnish Blog</a>
+    <a href="/{{ language }}">Home</a>
+  </li>
+  <li>
+    <a href="{{ linkify language }}/blog/">Blog</a>
   </li>
 </ul>

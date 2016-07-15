@@ -5,6 +5,12 @@ module.exports = function() {
     json: function(value, indentation) {
       return JSON.stringify(value, null, indentation);
     }
+    , linkify: function (value, indentation){
+      if(value === '')
+        return '';
+      else
+        return '/' + value;
+    }
   };
 
   for(var key in helpers) {
