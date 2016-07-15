@@ -11,9 +11,7 @@
     {{#with prismic.content.results.0.data}}
       <section>
         {{{ title.html }}}
-        <div>{{{ name.json.value }}}:<span id="name"></span></div>
-        <div>{{{ address.json.value }}}:<span id="address"></span></div>
-        <div>{{{ phone.json.value }}}:<span id="phone"></span></div>
+        {{{ content.html }}}
       </section>
     {{/with}}
     </main>

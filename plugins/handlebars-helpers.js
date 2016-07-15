@@ -5,11 +5,11 @@ module.exports = function() {
     json: function(value, indentation) {
       return JSON.stringify(value, null, indentation);
     }
-    , linkify: function (value, indentation){
-      if(value === '')
-        return '';
+    , linkify: function (lang, t1, t2){
+      if(lang === '')
+        return '/' + t1;
       else
-        return '/' + value;
+        return '/' + lang + '/' + t2;
     }
   };
 

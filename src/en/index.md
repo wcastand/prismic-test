@@ -5,6 +5,6 @@ languages:
   fr: French
 prismic:
   content:
-    query: '[[:d = at(document.tags, ["language:fr"])] [:d = at(document.type, "page")]]'
+    query: '[[:d = at(document.tags, ["language:en"])] [:d = at(document.type, "page")]]'
     collection: true
 ---

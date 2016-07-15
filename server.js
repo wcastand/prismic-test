@@ -39,9 +39,10 @@ var config = {
     var language = utils.getLanguageFromTags(doc)
     if(language === defaultLanguage){
       switch (doc.type) {
-        case 'page':
         case 'home':
           return '/' + filename
+        case 'page':
+          return '/' + (doc.uid || doc.slug) + '/' + filename
         case 'blog-post':
           return '/blog/' +  (doc.uid || doc.slug) + '/' + filename
         default:
@@ -50,9 +51,10 @@ var config = {
     }
     else if(language !== defaultLanguage){
       switch (doc.type) {
-        case 'page':
         case 'home':
           return '/' + language + '/' + filename
+        case 'page':
+          return '/' + language + '/' + (doc.uid || doc.slug) + '/' + filename
         case 'blog-post':
           return '/' + language + '/blog/' +  (doc.uid || doc.slug) + '/' + filename
         default:
