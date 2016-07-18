@@ -28,13 +28,15 @@ var defaultLanguage = 'fr';
 var config = {
   /*
     Si language 'fr' alors mis en root, sinon mis dans le dossier 'en'
-    page mis en root
+    page mise en root
     blog mis dans /blog/
   */
   prismicLinkResolver (ctx, doc) {
+    // Contient les languages voulu, a utiliser si on peut renvoyer un tableaux de string pour créer les différents contenus etc
+    // console.log(ctx.api.data.tags)
+
     if (doc.isBroken)
       return
-
     var filename = doc.data ? 'index.html' : ''
     var language = utils.getLanguageFromTags(doc)
     if(language === defaultLanguage){
